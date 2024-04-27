@@ -1,113 +1,142 @@
-import Image from "next/image";
+'use client'
+
+import './page.css';
+import { useRef, useState } from 'react';
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+    const allArr = useRef<number[]>([1, 2, 3, 4])
+    const [initArr, setInitArr] = useState<number[]>([1, 2, 3]);
+    const innerBoxRef = useRef<HTMLDivElement | null>(null)
 
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+    const isLeftBtnDisabled = initArr[0] === allArr.current[0]
+    const isRightBtnDisabled = initArr[initArr.length - 1] === allArr.current[allArr.current.length - 1]
 
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+    const move = (forward: number) => {
+        const currentTransform = getComputedStyle(innerBoxRef!.current!, null).transform.split(',')[4];
+        const distanceX = Number(currentTransform) || 0
+        innerBoxRef!.current!.style.transform = `translateX(${-500 * forward + distanceX}px)`;
+        const updatedArr = initArr.map(item => item + forward);
+        setInitArr(updatedArr);
+    }
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+    return (
+        <>
+            <div className="outerBox">
+                <div className="innerBox" ref={innerBoxRef}>
+                    <div className="box">
+                        <svg width="416" height="279" viewBox="0 0 416 279" fill="none" xmlns="http://www.w3.org/2000/svg" className='svg'>
+                            <path d="M32 0.000757482L384 6.31236e-05C401.673 2.82614e-05 416 14.3269 416 32.0001L416 163.027C416 168.42 414.637 173.726 412.037 178.451L410.141 181.897C404.656 191.869 404.879 204.003 410.727 213.767L411.451 214.975C414.428 219.944 416 225.628 416 231.42L416 246.366C416 264.039 401.673 278.366 384 278.366L32.0001 278.366C14.327 278.366 0.000171546 264.039 0.000141802 246.366L0.000111939 231.42C8.16747e-05 225.628 1.57219 219.944 4.54876 214.975L5.27291 213.766C11.1214 204.003 11.3445 191.869 5.85879 181.897L3.96288 178.451C1.36321 173.726 8.41792e-05 168.42 8.44154e-05 163.027L9.01517e-05 32.0008C9.09255e-05 14.3277 14.3269 0.000792344 32 0.000757482Z" fill="#131313" />
+                        </svg>
+                        <svg width="416" height="279" viewBox="0 0 416 279" fill="none" xmlns="http://www.w3.org/2000/svg" className='svg-inside'>
+                            <defs>
+                                <linearGradient id="gradient1" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0.01%" stopColor="#38C1A5" />
+                                    <stop offset="99.99%" stopColor="#0891D5" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M32 0.000757482L384 6.31236e-05C401.673 2.82614e-05 416 14.3269 416 32.0001L416 163.027C416 168.42 414.637 173.726 412.037 178.451L410.141 181.897C404.656 191.869 404.879 204.003 410.727 213.767L411.451 214.975C414.428 219.944 416 225.628 416 231.42L416 246.366C416 264.039 401.673 278.366 384 278.366L32.0001 278.366C14.327 278.366 0.000171546 264.039 0.000141802 246.366L0.000111939 231.42C8.16747e-05 225.628 1.57219 219.944 4.54876 214.975L5.27291 213.766C11.1214 204.003 11.3445 191.869 5.85879 181.897L3.96288 178.451C1.36321 173.726 8.41792e-05 168.42 8.44154e-05 163.027L9.01517e-05 32.0008C9.09255e-05 14.3277 14.3269 0.000792344 32 0.000757482Z" fill="url(#gradient1)" />
+                        </svg>
+                        <div className="content">
+                            <div className="content-top">
+                                <div className='color-bar'></div>
+                                <h3>Introduction to programming</h3>
+                                <div className='tag'>Beginner</div>
+                                <p>This course covers the most basic concepts in programming using Solidity as an example.</p>
+                            </div>
+                            <div className="content-bottom">
+                                <div className='hour'>35 Hour</div>
+                                <div className='course'>5 Course</div>
+                                <div className='rate'>45% COMPLETED</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="box">
+                        <svg width="416" height="278" viewBox="0 0 416 278" fill="none" xmlns="http://www.w3.org/2000/svg" className='svg'>
+                            <path d="M31.9998 1.52588e-05L384.001 1.38701e-05C401.674 1.4637e-05 416.001 14.3269 416.001 31.9999L416.001 78.1226C416.001 84.5537 414.032 90.8306 410.358 96.1092L409.39 97.5011C402.176 107.866 402.456 121.697 410.083 131.762C413.923 136.829 416.001 143.012 416.001 149.37L416.001 246.001C416.001 263.674 401.674 278.001 384.001 278.001L31.9997 278C14.3266 278 -0.000286267 263.673 -0.000254972 246L-6.76117e-05 149.369C-3.68142e-05 143.011 2.07818 136.828 5.91796 131.761C13.5451 121.696 13.8251 107.865 6.61148 97.5L5.64279 96.1081C1.96917 90.8295 -3.42403e-05 84.5527 -6.44748e-05 78.1216L-0.000215032 32.0001C-0.000275289 14.327 14.3267 1.52588e-05 31.9998 1.52588e-05Z" fill="#131313" />
+                        </svg>
+                        <svg width="416" height="278" viewBox="0 0 416 278" fill="none" xmlns="http://www.w3.org/2000/svg" className='svg-inside'>
+                            <defs>
+                                <linearGradient id="gradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0.01%" stopColor="#719BFF" />
+                                    <stop offset="99.99%" stopColor="#DA8AFF" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M31.9998 1.52588e-05L384.001 1.38701e-05C401.674 1.4637e-05 416.001 14.3269 416.001 31.9999L416.001 78.1226C416.001 84.5537 414.032 90.8306 410.358 96.1092L409.39 97.5011C402.176 107.866 402.456 121.697 410.083 131.762C413.923 136.829 416.001 143.012 416.001 149.37L416.001 246.001C416.001 263.674 401.674 278.001 384.001 278.001L31.9997 278C14.3266 278 -0.000286267 263.673 -0.000254972 246L-6.76117e-05 149.369C-3.68142e-05 143.011 2.07818 136.828 5.91796 131.761C13.5451 121.696 13.8251 107.865 6.61148 97.5L5.64279 96.1081C1.96917 90.8295 -3.42403e-05 84.5527 -6.44748e-05 78.1216L-0.000215032 32.0001C-0.000275289 14.327 14.3267 1.52588e-05 31.9998 1.52588e-05Z" fill="url(#gradient2)" />
+                        </svg>
+                        <div className="content">
+                            <div className="content-top-another">
+                                <h3>Moonshot 2023 Summer Hackathon</h3>
+                                <div className='tags'>
+                                    <div className='tag tag1'>All Tracks</div>
+                                    <div className='tag tag2'>Solidity</div>
+                                    <div className='tag tag3'>2k</div>
+                                </div>
+                            </div>
+                            <div className="content-bottom-another">
+                                <div className='form'>
+                                    <div className='key'>Signup</div>
+                                    <div className='value'>4/15 - 6/15</div>
+                                </div>
+                                <div className='form'>
+                                    <div className='key'>Event</div>
+                                    <div className='value'>6/15 - 7/15</div>
+                                </div>
+                                <div className='form'>
+                                    <div className='key'>Grant size</div>
+                                    <div className='value'>200K</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="box">
+                        <svg width="416" height="278" viewBox="0 0 416 278" fill="none" xmlns="http://www.w3.org/2000/svg" className='svg'>
+                            <path d="M1.57233e-07 238.001L9.35541e-07 39.9999C1.02238e-06 17.9085 17.9086 -6.26008e-05 40 -6.45321e-05L229.45 -8.10943e-05C238.544 -8.18894e-05 247.367 3.09901 254.464 8.7862L283.573 32.1138C290.67 37.801 299.493 40.9001 308.587 40.9001L376 40.9001C398.091 40.9001 416 58.8086 416 80.9L416 238C416 260.092 398.091 278 376 278L40 278C17.9086 278 -1.56562e-06 260.092 1.57233e-07 238.001Z" fill="#131313" />
+                        </svg>
+                        <svg width="416" height="278" viewBox="0 0 416 278" fill="none" xmlns="http://www.w3.org/2000/svg" className='svg-inside'>
+                            <defs>
+                                <linearGradient id="gradient3" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0.01%" stopColor="#D9E313" />
+                                    <stop offset="99.99%" stopColor="#3CBC34" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M1.57233e-07 238.001L9.35541e-07 39.9999C1.02238e-06 17.9085 17.9086 -6.26008e-05 40 -6.45321e-05L229.45 -8.10943e-05C238.544 -8.18894e-05 247.367 3.09901 254.464 8.7862L283.573 32.1138C290.67 37.801 299.493 40.9001 308.587 40.9001L376 40.9001C398.091 40.9001 416 58.8086 416 80.9L416 238C416 260.092 398.091 278 376 278L40 278C17.9086 278 -1.56562e-06 260.092 1.57233e-07 238.001Z" fill="url(#gradient3)" />
+                        </svg>
+                        <div className="content">
+                            <div className="content-top">
+                                <div className='color-bar color-bar-two'></div>
+                                <h3>Web 3.0 Programming Basics</h3>
+                                <div className='tag'>Beginner</div>
+                                <p>Basic concepts in programming of Solidity. Topics include: variables, functions, flow control, error handling, data structure.</p>
+                            </div>
+                            <div className="content-bottom">
+                                <div className='hour'>35 Hour</div>
+                                <div className='course'>5 Course</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="box">
+                        <svg width="416" height="278" viewBox="0 0 416 278" fill="none" xmlns="http://www.w3.org/2000/svg" className='svg'>
+                            <rect width="416" height="278" rx="36" fill="#111111" />
+                        </svg>
+                        <svg width="416" height="278" viewBox="0 0 416 278" fill="none" xmlns="http://www.w3.org/2000/svg" className='svg-inside'>
+                            <defs>
+                                <linearGradient id="gradient4" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0.01%" stopColor="#E0AD38" />
+                                    <stop offset="99.99%" stopColor="#EB3E1C" />
+                                </linearGradient>
+                            </defs>
+                            <rect width="416" height="278" rx="36" fill="url(#gradient4)" />
+                        </svg>
+                        <div className="content pic"></div>
+                    </div>
+                </div>
+                <button onClick={() => { move(-1) }} disabled={isLeftBtnDisabled} className='leftBtn btn'>&lt;</button>
+                <button onClick={() => { move(1) }} disabled={isRightBtnDisabled} className='rightBtn btn'>&gt;</button>
+            </div>
+        </>
+    );
+};
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
-}
+
+

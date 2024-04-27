@@ -31,3 +31,12 @@ body {
     text-wrap: balance;
   }
 }
+
+@font-face {
+  font-family: "NEXT-Book-Regular";
+  src: url("../public/fonts/NEXT-Book-Regular.otf");
+}
+@font-face {
+  font-family: "neuemachina-regular";
+  src: url("../public/fonts/neuemachina-regular.otf");
+}
