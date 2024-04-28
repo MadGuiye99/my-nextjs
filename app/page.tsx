@@ -108,7 +108,7 @@ export default function Home() {
                         </svg>
                         <div className="content">
                             <div className="content-top">
-                                <div className='color-bar color-bar-two'></div>
+                                <div className='color-bar color-bar-second'></div>
                                 <h3>Web 3.0 Programming Basics</h3>
                                 <div className='tag'>Beginner</div>
                                 <p>Basic concepts in programming of Solidity. Topics include: variables, functions, flow control, error handling, data structure.</p>
