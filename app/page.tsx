@@ -19,7 +19,7 @@ export default function Home() {
     const move = (forward: number) => {
         const currentTransform = getComputedStyle(innerBoxRef!.current!, null).transform.split(',')[4];
         const distanceX = Number(currentTransform) || 0
-        innerBoxRef!.current!.style.transform = `translateX(${-500 * forward + distanceX}px)`;
+        innerBoxRef!.current!.style.transform = `translateX(${-510 * forward + distanceX}px)`;
         const updatedArr = initArr.map(item => item + forward);
         setInitArr(updatedArr);
     }
